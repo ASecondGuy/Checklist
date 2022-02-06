@@ -1,0 +1,7 @@
+L/Release
+update changelog
+update version number
+export (html, Win)
+E/Export All
+zip
+upload
