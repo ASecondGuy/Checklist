@@ -8,35 +8,37 @@ var Doc : MarginContainer
 var file_helper := preload("res://addons/Checklist/filehelper.gd").new()
 
 
-var settings := {
+const default_settings := {
 	"checklist_folder" : "res://addons/Checklist/checklists/",
-	
+	"use_bottom_panel" : false,
+	"checklist_locations" : ["res://addons/Checklist/checklists/"],
 }
+var settings := default_settings
 
 
 func _ready():
 	add_child(file_helper)
 	Doc = DocScene.instance()
 	Doc.plugin = self
+	
+	# load settings and use defaults if something went wrong
+	var loaded_settings = file_helper.read_json("res://addons/Checklist/settings.json")
+	if !loaded_settings is Dictionary: loaded_settings = default_settings
+	# 
+	for key in loaded_settings.keys():
+		settings[key] = loaded_settings[key]
+	
+	
 	Doc.settings = settings
 	Doc.fh = file_helper
-	Doc.hide()
-	add_control_to_bottom_panel(Doc, "Checklist")
-	Doc.load_changelog()
-	load_checklist()
+	if settings.get("use_bottom_panel", true):
+		add_control_to_bottom_panel(Doc, "Checklist")
+		Doc.hide()
+	else:
+		add_control_to_dock(DOCK_SLOT_RIGHT_UL, Doc)
+	Doc.setup()
 	
 	print("Checklist started")
-
-
-func _print_with_children(node:Node, indent:=0):
-	var out = "	".repeat(indent)
-	if node is Button or node is Label:
-		out += str(node, " ", node.text)
-	else:
-		out += str(node)
-	print(out)
-	for c in node.get_children():
-		_print_with_children(c, indent+1)
 
 
 func _exit_tree():
@@ -48,18 +50,11 @@ func _exit_tree():
 
 func apply_changes():
 	Doc.save_changelog()
+	file_helper.write_json("res://addons/Checklist/settings.json", settings)
 
 
 func make_visible(visible):
 	Doc.visible = visible
-
-
-func load_checklist():
-	var f = File.new()
-	if f.open("res://addons/Checklist/checklists/checklist.txt", f.READ) == OK:
-		var data = f.get_as_text()
-		data = data.split("\n")
-		Doc.add_checklist(data)
 
 
 func execute_makro(path:String, function:="run", args:=[]):

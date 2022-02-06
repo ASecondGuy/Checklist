@@ -1,7 +1,15 @@
 L/Release
 update changelog
+
+I/1
 update version number
 export (html, Win)
 E/Export All
 zip
+I/1
 upload
+I/=0
+test
+
+test1.5
+test2
