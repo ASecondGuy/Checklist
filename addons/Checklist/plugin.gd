@@ -3,6 +3,7 @@ extends EditorPlugin
 
 
 const DocScene = preload("res://addons/Checklist/Doc.tscn")
+var exporter = preload("res://addons/Checklist/exporter.gd")
 
 var Doc : MarginContainer
 var file_helper := preload("res://addons/Checklist/filehelper.gd").new()
@@ -17,7 +18,13 @@ const default_settings := {
 var settings := default_settings
 
 
+var threads := {}
+
 func _ready():
+	var cmd_args := Array(OS.get_cmdline_args())
+	if (cmd_args.has("--export") or cmd_args.has("--export-debug") or
+	cmd_args.has("--no-window")):
+		return
 	add_child(file_helper)
 	Doc = DocScene.instance()
 	Doc.plugin = self
@@ -49,6 +56,14 @@ func _exit_tree():
 	print("Checklist stopped ")
 
 
+func _process(_delta):
+	for preset in threads.keys():
+		if !threads[preset].is_alive():
+			threads[preset].wait_to_finish()
+			threads.erase(preset)
+			print(str(threads.size(), " exports still running"))
+
+
 func apply_changes():
 	Doc.save_changelog()
 	file_helper.write_json("res://addons/Checklist/settings.json", settings)
@@ -62,5 +77,21 @@ func execute_makro(path:String, function:="run", args:=[]):
 	print("ReleaseChecker does not support makros yet")
 
 func export_game(debug:=false, presets=[]):
-	pass
+	for preset in presets:
+		if preset == "all":
+			var conf := ConfigFile.new()
+			conf.load("res://export_presets.cfg")
+			for section in conf.get_sections():
+				if section.count(".") == 1:
+					export_game(debug, [conf.get_value(section, "name")])
+			return
+		var thread := Thread.new()
+		thread.start(exporter.new(), "threaded_export", [preset, debug])
+		threads[preset] = thread
+
+
+
+
+
+
 

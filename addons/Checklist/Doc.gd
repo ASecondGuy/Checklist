@@ -99,7 +99,7 @@ func make_checklist(list:Array):
 			check.text = item
 			cont.add_child(check)
 		
-		var dat = item.strip_edges().split("/")
+		var dat : Array = item.strip_edges().split("/")
 		match dat[0].strip_edges():
 			"I":
 				if dat[1].begins_with("="):
@@ -123,7 +123,8 @@ func make_checklist(list:Array):
 				var check := CheckBox.new()
 				cont.add_child(check)
 				btn.text = dat[1]
-				btn.connect("pressed", plugin, "export_game", [false])
+				btn.connect("pressed", plugin, "export_game", 
+				[dat[2].to_lower()=="true", dat.slice(3, dat.size()-1)])
 				btn.connect("pressed", check, "set", ["pressed", true])
 				cont.add_child(btn)
 			_:
