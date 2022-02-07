@@ -1,9 +1,47 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/Checklist/Doc.gd" type="Script" id=1]
 [ext_resource path="res://addons/Checklist/icons/CheckBox.svg" type="Texture" id=2]
 [ext_resource path="res://addons/Checklist/icons/Save.svg" type="Texture" id=3]
 [ext_resource path="res://addons/Checklist/Settings.gd" type="Script" id=4]
+[ext_resource path="res://addons/Checklist/icons/Edit.svg" type="Texture" id=5]
+[ext_resource path="res://addons/Checklist/icons/Remove.svg" type="Texture" id=6]
+
+[sub_resource type="GDScript" id=2]
+script/source = "tool
+extends Button
+
+var progress := 0.0
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	set_process(false)
+
+
+func _process(delta):
+	progress += delta
+	text = str(ceil(progress*20), \"%\")
+	if progress >= 5:
+		find_parent(\"Checklist\").get_parent().get_parent().delete_current_checklist()
+		reset()
+
+
+func _on_deletebtn_button_down():
+	print(\"btn down\")
+	set_process(true)
+
+
+func _on_deletebtn_button_up():
+	reset()
+
+func reset():
+	set_process(false)
+	progress = 0
+	text = \"\"
+
+
+"
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade away"
@@ -64,15 +102,33 @@ icon = ExtResource( 2 )
 
 [node name="OptionButton" type="OptionButton" parent="TabContainer/Checklist/cont/btns"]
 margin_left = 106.0
-margin_right = 135.0
+margin_right = 926.0
 margin_bottom = 22.0
+size_flags_horizontal = 3
+
+[node name="NameEdit" type="LineEdit" parent="TabContainer/Checklist/cont/btns"]
+visible = false
+margin_left = 543.0
+margin_right = 976.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+placeholder_text = "Name"
+
+[node name="deletebtn" type="Button" parent="TabContainer/Checklist/cont/btns"]
+pause_mode = 2
+margin_left = 930.0
+margin_right = 958.0
+margin_bottom = 22.0
+icon = ExtResource( 6 )
+script = SubResource( 2 )
 
 [node name="Editbtn" type="Button" parent="TabContainer/Checklist/cont/btns"]
-margin_left = 139.0
-margin_right = 175.0
+margin_left = 962.0
+margin_right = 1016.0
 margin_bottom = 22.0
 toggle_mode = true
 text = "Edit"
+icon = ExtResource( 5 )
 
 [node name="Scroll" type="ScrollContainer" parent="TabContainer/Checklist/cont"]
 margin_top = 26.0
@@ -143,7 +199,10 @@ script = ExtResource( 4 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 "anims/fade away" = SubResource( 1 )
 
+[connection signal="tab_changed" from="TabContainer" to="." method="_on_TabContainer_tab_changed"]
 [connection signal="pressed" from="TabContainer/Checklist/cont/btns/uncheckbtn" to="." method="uncheck_checklist"]
 [connection signal="item_selected" from="TabContainer/Checklist/cont/btns/OptionButton" to="." method="_on_OptionButton_item_selected"]
+[connection signal="button_down" from="TabContainer/Checklist/cont/btns/deletebtn" to="TabContainer/Checklist/cont/btns/deletebtn" method="_on_deletebtn_button_down"]
+[connection signal="button_up" from="TabContainer/Checklist/cont/btns/deletebtn" to="TabContainer/Checklist/cont/btns/deletebtn" method="_on_deletebtn_button_up"]
 [connection signal="toggled" from="TabContainer/Checklist/cont/btns/Editbtn" to="." method="_on_Editbtn_toggled"]
 [connection signal="pressed" from="TabContainer/Changelog/HBoxContainer/savebtn" to="." method="save_changelog"]
