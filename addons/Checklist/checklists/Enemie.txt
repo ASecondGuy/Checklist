@@ -1,9 +1,8 @@
 #This is an example Template
-E/Android Debug/true/Android
-E/Android Release/f/Android
 L/Enemie
 Placeholder Art
 AI
 Introduction Level
 funny Wiki entry
 Good Art
+Promotional Twitter post
