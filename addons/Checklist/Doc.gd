@@ -89,17 +89,18 @@ func load_checklist(id:int):
 
 func make_checklist(list:Array):
 	var intendation := 0
+	var split_symbol := "|"
 	for item in list:
 		if item.strip_edges().begins_with("#"):
 			continue
 		
 		var cont := ItemContainer.new()
-		if item.find("/")==-1:
+		if item.find(split_symbol)==-1:
 			var check = CheckBox.new()
 			check.text = item
 			cont.add_child(check)
 		
-		var dat : Array = item.strip_edges().split("/")
+		var dat : Array = item.strip_edges().split(split_symbol)
 		match dat[0].strip_edges():
 			"I":
 				if dat[1].begins_with("="):
@@ -115,7 +116,7 @@ func make_checklist(list:Array):
 				var check := CheckBox.new()
 				cont.add_child(check)
 				btn.text = dat[1]
-				btn.connect("pressed", plugin, "execute_makro", [""])
+				btn.connect("pressed", self, "_macro_request", [cont, dat])
 				btn.connect("pressed", check, "set", ["pressed", true])
 				cont.add_child(btn)
 			"E":
@@ -225,4 +226,13 @@ func _on_TabContainer_tab_changed(tab):
 	if tab != 0: return
 	find_checklists()
 
-
+func _macro_request(cont:ItemContainer, data:Array):
+	var script_path : String = data[2]
+	var function : String = data[3]
+	if function.empty() or !function.is_valid_filename(): function = "_run"
+	var args := []
+	for i in range(2, cont.get_child_count(), 2):
+		# TODO: get the values from the children in here
+		pass
+	
+	plugin.execute_makro(script_path, function, args)

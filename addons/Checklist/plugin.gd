@@ -73,8 +73,10 @@ func make_visible(visible):
 	Doc.visible = visible
 
 
-func execute_makro(path:String, function:="run", args:=[]):
-	print("ReleaseChecker does not support makros yet")
+func execute_makro(path:String, function:="_run", args:=[]):
+	var obj : Object = load(path).new()
+	obj.callv(function, args)
+
 
 func export_game(debug:=false, presets=[]):
 	for preset in presets:
@@ -88,8 +90,6 @@ func export_game(debug:=false, presets=[]):
 		var thread := Thread.new()
 		thread.start(exporter.new(), "threaded_export", [preset, debug])
 		threads[preset] = thread
-
-
 
 
 

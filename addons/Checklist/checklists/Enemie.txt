@@ -1,5 +1,5 @@
 #This is an example Template
-L/Enemie
+L|Enemie
 Placeholder Art
 AI
 Introduction Level
