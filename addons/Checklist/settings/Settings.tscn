@@ -1,0 +1,75 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/Checklist/settings/Settings.gd" type="Script" id=1]
+[ext_resource path="res://addons/Checklist/settings/ChecklistLocations.gd" type="Script" id=2]
+
+[node name="Settings" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bottompanel" type="CheckButton" parent="."]
+margin_right = 1016.0
+margin_bottom = 40.0
+text = "Use Bottom panel"
+
+[node name="checklistFolder" type="HBoxContainer" parent="."]
+margin_top = 44.0
+margin_right = 1016.0
+margin_bottom = 64.0
+
+[node name="Label" type="Label" parent="checklistFolder"]
+margin_top = 3.0
+margin_right = 146.0
+margin_bottom = 17.0
+text = "Checklist save location"
+
+[node name="OptionButton" type="OptionButton" parent="checklistFolder"]
+margin_left = 150.0
+margin_right = 1016.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="ChecklistLocations" type="VBoxContainer" parent="."]
+margin_top = 68.0
+margin_right = 1016.0
+margin_bottom = 92.0
+script = ExtResource( 2 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ChecklistLocations"]
+margin_right = 1016.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="ChecklistLocations/HBoxContainer"]
+margin_top = 3.0
+margin_right = 93.0
+margin_bottom = 17.0
+text = "File locations: "
+
+[node name="addbtn" type="Button" parent="ChecklistLocations/HBoxContainer"]
+margin_left = 97.0
+margin_right = 132.0
+margin_bottom = 20.0
+text = "add"
+
+[node name="togglebtn" type="Button" parent="ChecklistLocations/HBoxContainer"]
+margin_left = 971.0
+margin_right = 1016.0
+margin_bottom = 20.0
+size_flags_horizontal = 10
+toggle_mode = true
+text = "show"
+
+[node name="list" type="VBoxContainer" parent="ChecklistLocations"]
+margin_top = 24.0
+margin_right = 1016.0
+margin_bottom = 24.0
+
+[connection signal="toggled" from="bottompanel" to="." method="_on_bottompanel_toggled"]

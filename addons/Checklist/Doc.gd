@@ -24,6 +24,7 @@ func _ready():
 
 
 func setup():
+	print(plugin)
 	load_changelog()
 	find_checklists()
 
@@ -223,6 +224,7 @@ class ItemContainer extends HBoxContainer:
 
 
 func _on_TabContainer_tab_changed(tab):
+	if tab == 2: $TabContainer/Settings.show()
 	if tab != 0: return
 	find_checklists()
 

@@ -16,9 +16,8 @@ const default_settings := {
 	"template_path" : "res://addons/Checklist/Template.txt"
 }
 var settings := default_settings
-
-
 var threads := {}
+
 
 func _ready():
 	var cmd_args := Array(OS.get_cmdline_args())
@@ -39,11 +38,7 @@ func _ready():
 	
 	Doc.settings = settings
 	Doc.fh = file_helper
-	if settings.get("use_bottom_panel", true):
-		add_control_to_bottom_panel(Doc, "Checklist")
-		Doc.hide()
-	else:
-		add_control_to_dock(DOCK_SLOT_RIGHT_UL, Doc)
+	update_doc_position()
 	Doc.setup()
 	
 	print("Checklist started")
@@ -51,7 +46,9 @@ func _ready():
 
 func _exit_tree():
 	Doc.save_changelog()
+	
 	remove_control_from_bottom_panel(Doc)
+	remove_control_from_docks(Doc)
 	Doc.queue_free()
 	print("Checklist stopped ")
 
@@ -92,6 +89,13 @@ func export_game(debug:=false, presets=[]):
 		threads[preset] = thread
 
 
-
-
-
+func update_doc_position():
+	if settings.get("use_bottom_panel", false):
+		if Doc.is_inside_tree():
+			remove_control_from_docks(Doc)
+		add_control_to_bottom_panel(Doc, "Checklist")
+		Doc.hide()
+	else:
+		if Doc.is_inside_tree():
+			remove_control_from_bottom_panel(Doc)
+		add_control_to_dock(DOCK_SLOT_RIGHT_UL, Doc)

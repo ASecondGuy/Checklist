@@ -3,7 +3,7 @@
 [ext_resource path="res://addons/Checklist/Doc.gd" type="Script" id=1]
 [ext_resource path="res://addons/Checklist/icons/CheckBox.svg" type="Texture" id=2]
 [ext_resource path="res://addons/Checklist/icons/Save.svg" type="Texture" id=3]
-[ext_resource path="res://addons/Checklist/Settings.gd" type="Script" id=4]
+[ext_resource path="res://addons/Checklist/settings/Settings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/Checklist/icons/Edit.svg" type="Texture" id=5]
 [ext_resource path="res://addons/Checklist/icons/Remove.svg" type="Texture" id=6]
 
@@ -186,15 +186,8 @@ show_line_numbers = true
 fold_gutter = true
 hiding_enabled = true
 
-[node name="Settings" type="VBoxContainer" parent="TabContainer"]
+[node name="Settings" parent="TabContainer" instance=ExtResource( 4 )]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-script = ExtResource( 4 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 "anims/fade away" = SubResource( 1 )

@@ -2,7 +2,7 @@ L|Release
 L|This is an example Checklist
 update changelog
 
-update version number
+P|update version number|
 I|=1
 L|Exports
 E|Export All Release|f|all
