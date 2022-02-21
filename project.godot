@@ -12,7 +12,7 @@ config_version=4
 
 config/name="Checklist"
 run/main_scene="res://addons/Checklist/Doc.tscn"
-config/icon="res://icon.png"
+config/icon="res://addons/Checklist/icon.svg"
 
 [editor_plugins]
 
