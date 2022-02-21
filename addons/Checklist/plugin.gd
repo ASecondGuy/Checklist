@@ -24,9 +24,7 @@ func _ready():
 	if (cmd_args.has("--export") or cmd_args.has("--export-debug") or
 	cmd_args.has("--no-window")):
 		return
-	add_child(file_helper)
-	Doc = DocScene.instance()
-	Doc.plugin = self
+	if !Engine.editor_hint: return
 	
 	# load settings and use defaults if something went wrong
 	var loaded_settings = file_helper.read_json("res://addons/Checklist/settings.json")
@@ -35,6 +33,9 @@ func _ready():
 	for key in loaded_settings.keys():
 		settings[key] = loaded_settings[key]
 	
+	add_child(file_helper)
+	Doc = DocScene.instance()
+	Doc.plugin = self
 	
 	Doc.settings = settings
 	Doc.fh = file_helper

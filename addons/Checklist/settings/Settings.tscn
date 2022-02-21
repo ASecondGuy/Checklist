@@ -31,16 +31,17 @@ margin_right = 146.0
 margin_bottom = 17.0
 text = "Checklist save location"
 
-[node name="OptionButton" type="OptionButton" parent="checklistFolder"]
+[node name="newListFolder" type="OptionButton" parent="checklistFolder"]
 margin_left = 150.0
 margin_right = 1016.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
+clip_text = true
 
 [node name="ChecklistLocations" type="VBoxContainer" parent="."]
 margin_top = 68.0
 margin_right = 1016.0
-margin_bottom = 92.0
+margin_bottom = 88.0
 script = ExtResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ChecklistLocations"]
@@ -54,6 +55,7 @@ margin_bottom = 17.0
 text = "File locations: "
 
 [node name="addbtn" type="Button" parent="ChecklistLocations/HBoxContainer"]
+visible = false
 margin_left = 97.0
 margin_right = 132.0
 margin_bottom = 20.0
@@ -68,8 +70,25 @@ toggle_mode = true
 text = "show"
 
 [node name="list" type="VBoxContainer" parent="ChecklistLocations"]
+visible = false
 margin_top = 24.0
 margin_right = 1016.0
 margin_bottom = 24.0
 
+[node name="FileDialog" type="FileDialog" parent="."]
+margin_top = 96.0
+margin_right = 1016.0
+margin_bottom = 226.0
+window_title = "Open a Directory"
+resizable = true
+mode = 2
+access = 2
+show_hidden_files = true
+current_dir = "/devRepos/Checklist"
+current_path = "/devRepos/Checklist/"
+
 [connection signal="toggled" from="bottompanel" to="." method="_on_bottompanel_toggled"]
+[connection signal="item_selected" from="checklistFolder/newListFolder" to="." method="_on_newListFolder_item_selected"]
+[connection signal="pressed" from="ChecklistLocations/HBoxContainer/addbtn" to="." method="_open_search_folders_file_dialoge"]
+[connection signal="toggled" from="ChecklistLocations/HBoxContainer/togglebtn" to="ChecklistLocations" method="_on_togglebtn_toggled"]
+[connection signal="dir_selected" from="FileDialog" to="ChecklistLocations" method="_on_FileDialog_dir_selected"]

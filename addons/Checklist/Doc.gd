@@ -29,6 +29,7 @@ func setup():
 	find_checklists()
 
 func find_checklists():
+	settings = plugin.settings
 	
 	checklist_file_list.clear()
 	for folder in settings.get("checklist_locations", ["res://addons/Checklist/checklists/"]):
@@ -78,7 +79,8 @@ func load_checklist(id:int):
 		pop.add_item("New")
 		_list_chooser.selected = id
 		_list_chooser.text = new_name
-		checklist_file_list[new_name] = settings.get("checklist_locations")[0]+new_name+".txt"
+		checklist_file_list[new_name] = settings.get("checklist_folder")+new_name+".txt"
+		print(checklist_file_list[new_name])
 		fh.write_text(checklist_file_list[new_name], fh.read_text(settings.template_path))
 	
 	current_path = checklist_file_list.values()[id]
