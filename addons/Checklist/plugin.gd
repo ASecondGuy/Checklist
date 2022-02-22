@@ -73,7 +73,7 @@ func make_visible(visible):
 
 func execute_makro(path:String, function:="_run", args:=[]):
 	if !file_helper.path_exists(path):
-		push_error("Makro file doesn't exist")
+		push_error("Makro file (%s) doesn't exist" % path)
 		return
 	var obj : Object = load(path).new()
 	obj.callv(function, args)
