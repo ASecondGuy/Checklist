@@ -74,6 +74,7 @@ margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 tab_align = 0
+use_hidden_tabs_for_min_size = true
 
 [node name="Checklist" type="MarginContainer" parent="TabContainer"]
 anchor_right = 1.0

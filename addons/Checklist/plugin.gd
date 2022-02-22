@@ -13,7 +13,8 @@ const default_settings := {
 	"checklist_folder" : "res://addons/Checklist/checklists/",
 	"use_bottom_panel" : false,
 	"checklist_locations" : ["res://addons/Checklist/checklists/"],
-	"template_path" : "res://addons/Checklist/Template.txt"
+	"template_path" : "res://addons/Checklist/Template.txt",
+	"changelog_path" : "res://Changelog.txt",
 }
 var settings := default_settings
 var threads := {}

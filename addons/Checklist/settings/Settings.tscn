@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/Checklist/settings/Settings.gd" type="Script" id=1]
 [ext_resource path="res://addons/Checklist/settings/ChecklistLocations.gd" type="Script" id=2]
+[ext_resource path="res://addons/Checklist/icons/Load.svg" type="Texture" id=3]
 
 [node name="Settings" type="VBoxContainer"]
 anchor_right = 1.0
@@ -75,6 +76,14 @@ margin_top = 24.0
 margin_right = 1016.0
 margin_bottom = 24.0
 
+[node name="changelogbutton" type="Button" parent="."]
+margin_top = 92.0
+margin_right = 1016.0
+margin_bottom = 114.0
+icon = ExtResource( 3 )
+clip_text = true
+align = 0
+
 [node name="FileDialog" type="FileDialog" parent="."]
 margin_top = 96.0
 margin_right = 1016.0
@@ -87,8 +96,18 @@ show_hidden_files = true
 current_dir = "/devRepos/Checklist"
 current_path = "/devRepos/Checklist/"
 
+[node name="Filechangelog" type="FileDialog" parent="."]
+margin_right = 315.0
+margin_bottom = 130.0
+window_title = "Changelog location"
+resizable = true
+filters = PoolStringArray( "*.txt" )
+show_hidden_files = true
+
 [connection signal="toggled" from="bottompanel" to="." method="_on_bottompanel_toggled"]
 [connection signal="item_selected" from="checklistFolder/newListFolder" to="." method="_on_newListFolder_item_selected"]
 [connection signal="pressed" from="ChecklistLocations/HBoxContainer/addbtn" to="." method="_open_search_folders_file_dialoge"]
 [connection signal="toggled" from="ChecklistLocations/HBoxContainer/togglebtn" to="ChecklistLocations" method="_on_togglebtn_toggled"]
+[connection signal="pressed" from="changelogbutton" to="." method="_on_changelogbutton_pressed"]
 [connection signal="dir_selected" from="FileDialog" to="ChecklistLocations" method="_on_FileDialog_dir_selected"]
+[connection signal="file_selected" from="Filechangelog" to="." method="_on_Filechangelog_file_selected"]
