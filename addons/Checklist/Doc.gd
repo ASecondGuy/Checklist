@@ -11,6 +11,7 @@ onready var _name_edit := $TabContainer/Checklist/cont/btns/NameEdit
 onready var _edit_btn := $TabContainer/Checklist/cont/btns/Editbtn
 
 var plugin : EditorPlugin
+var last_loaded_checklist := ""
 var settings : Dictionary
 var fh
 
@@ -83,7 +84,10 @@ func load_checklist(id:int):
 		print(checklist_file_list[new_name])
 		fh.write_text(checklist_file_list[new_name], fh.read_text(settings.template_path))
 	
-	current_path = checklist_file_list.values()[id]
+	var next_path : String = checklist_file_list.values()[id]
+	if next_path == last_loaded_checklist: return
+	current_path = next_path
+	last_loaded_checklist = next_path
 	_name_edit.text = checklist_file_list.keys()[id]
 	delete_checklist()
 	make_checklist(fh.read_text(current_path).split("\n", false))
@@ -179,6 +183,7 @@ func _on_OptionButton_item_selected(index):
 
 
 func _on_Editbtn_toggled(button_pressed):
+	last_loaded_checklist = ""
 	if button_pressed:
 		_list_edit.text = fh.read_text(current_path)
 	else:
@@ -226,7 +231,8 @@ class ItemContainer extends HBoxContainer:
 
 
 func _on_TabContainer_tab_changed(tab):
-	if tab == 2: $TabContainer/Settings.show()
+	if tab == 2: 
+		$TabContainer/Settings.show()
 	if tab != 0: return
 	find_checklists()
 
