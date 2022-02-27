@@ -50,7 +50,7 @@ func read_text(path:String, key:="", compression=-1)->String:
 	if err==OK:
 		data = _test_file.get_as_text()
 	else:
-		prints("Couldn't read", path, "ErrorCode:", err)
+		push_error(str("Couldn't read ", path, " ErrorCode: ", err))
 	
 	_test_file.close()
 	return data
@@ -63,7 +63,7 @@ func write_text(path:String, text:String, key:="", compression=-1)->int:
 	if err==OK:
 		_test_file.store_string(text)
 	else:
-		prints("Couldn't write", path, "ErrorCode:", err)
+		push_error(str("Couldn't write ", path, " ErrorCode: ", err))
 	
 	_test_file.close()
 	return err

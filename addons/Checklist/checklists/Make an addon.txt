@@ -1,0 +1,11 @@
+L|Make an addon
+have an idea
+be a great programmer
+programm the addon
+test everything
+fix bugs
+remove debug prints
+take screenshots
+finishing touches
+E|Export All|f|all
+M|upload to AssetLib|res://testmacro

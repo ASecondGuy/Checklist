@@ -25,7 +25,6 @@ func _ready():
 
 
 func setup():
-	print(plugin)
 	load_changelog()
 	find_checklists()
 
@@ -81,7 +80,6 @@ func load_checklist(id:int):
 		_list_chooser.selected = id
 		_list_chooser.text = new_name
 		checklist_file_list[new_name] = settings.get("checklist_folder")+new_name+".txt"
-		print(checklist_file_list[new_name])
 		fh.write_text(checklist_file_list[new_name], fh.read_text(settings.template_path))
 	
 	var next_path : String = checklist_file_list.values()[id]
@@ -119,6 +117,8 @@ func make_checklist(list:Array):
 				lab.text = dat[1]
 				cont.add_child(lab)
 			"M":
+				# skip if to few arguments
+				if dat.size() < 3: continue
 				var btn := Button.new()
 				var check := CheckBox.new()
 				cont.add_child(check)
@@ -127,6 +127,8 @@ func make_checklist(list:Array):
 				btn.connect("pressed", check, "set", ["pressed", true])
 				cont.add_child(btn)
 			"E":
+				# skip if to few arguments
+				if dat.size() < 4: continue
 				var btn = Button.new()
 				var check := CheckBox.new()
 				cont.add_child(check)
@@ -238,7 +240,9 @@ func _on_TabContainer_tab_changed(tab):
 
 func _macro_request(cont:ItemContainer, data:Array):
 	var script_path : String = data[2]
-	var function : String = data[3]
+	var function : String = "_run"
+	if data.size() >= 4: function = data[3]
+	
 	if function.empty() or !function.is_valid_filename(): function = "_run"
 	var args := []
 	for i in range(2, cont.get_child_count(), 2):
