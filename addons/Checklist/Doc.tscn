@@ -145,6 +145,7 @@ margin_top = 297.0
 margin_right = 1016.0
 margin_bottom = 564.0
 size_flags_vertical = 3
+wrap_enabled = true
 
 [node name="Changelog" type="VBoxContainer" parent="TabContainer"]
 visible = false

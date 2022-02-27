@@ -9,6 +9,7 @@ onready var _list_chooser := $TabContainer/Checklist/cont/btns/OptionButton
 onready var _list_edit := $TabContainer/Checklist/cont/ListEdit
 onready var _name_edit := $TabContainer/Checklist/cont/btns/NameEdit
 onready var _edit_btn := $TabContainer/Checklist/cont/btns/Editbtn
+onready var _uncheck_btn := $TabContainer/Checklist/cont/btns/uncheckbtn
 
 var plugin : EditorPlugin
 var last_loaded_checklist := ""
@@ -51,9 +52,9 @@ func find_checklists():
 		if id == -1: id = 0
 		_list_chooser.select(id)
 		load_checklist(id)
-		$TabContainer/Checklist/cont/btns/Editbtn.disabled = false
+		_edit_btn.disabled = false
 	else:
-		$TabContainer/Checklist/cont/btns/Editbtn.disabled = true
+		_edit_btn.disabled = true
 		delete_checklist()
 		_list_chooser.text = ""
 	
@@ -186,6 +187,7 @@ func _on_OptionButton_item_selected(index):
 
 func _on_Editbtn_toggled(button_pressed):
 	last_loaded_checklist = ""
+	_uncheck_btn.visible = !button_pressed
 	if button_pressed:
 		_list_edit.text = fh.read_text(current_path)
 	else:
