@@ -72,7 +72,7 @@ func make_visible(visible):
 	Doc.visible = visible
 
 
-func execute_makro(path:String, function:="_run", args:=[]):
+func execute_macro(path:String, function:="_run", args:=[]):
 	if !file_helper.path_exists(path):
 		push_error("Makro file (%s) doesn't exist" % path)
 		return

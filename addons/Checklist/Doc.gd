@@ -245,4 +245,4 @@ func _macro_request(cont:ItemContainer, data:Array):
 		# TODO: get the values from the children in here
 		pass
 	
-	plugin.execute_makro(script_path, function, args)
+	plugin.execute_macro(script_path, function, args)
