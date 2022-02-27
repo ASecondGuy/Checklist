@@ -2,7 +2,8 @@ L|Release
 L|This is an example Checklist
 update changelog
 
-P|update version number|
+# this is not implemented yet
+#P|update version number|
 I|=1
 L|Exports
 E|Export All Release|f|all
