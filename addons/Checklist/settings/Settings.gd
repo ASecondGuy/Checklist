@@ -33,7 +33,5 @@ func _on_changelogbutton_pressed():
 
 
 func _on_Filechangelog_file_selected(path : String):
-	if !path.ends_with("/"):
-		path += "/"
 	plugin.settings["changelog_path"] = path
 	changelog_btn.text = "Changelog path: " + path
