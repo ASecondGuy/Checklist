@@ -20,7 +20,6 @@ var checklist_file_list := {}
 var current_path := ""
 
 func _enter_tree():
-	print("testdoc enter tree")
 	if !Engine.editor_hint:
 		fh = preload("res://addons/Checklist/filehelper.gd").new()
 
@@ -141,6 +140,23 @@ func make_checklist(list:Array):
 				[dat[2].to_lower()=="true", dat.slice(3, dat.size()-1)])
 				btn.connect("pressed", check, "set", ["pressed", true])
 				cont.add_child(btn)
+			"O":
+				# skip if to few arguments
+				if dat.size() < 2: continue
+				# argument 2 is optional
+				if dat.size() == 2: 
+					dat.push_back(dat[1])
+				var btn = Button.new()
+				var check := CheckBox.new()
+				cont.add_child(check)
+				btn.text = dat[1]
+				btn.icon = preload("res://addons/Checklist/icons/LinkButton.svg")
+				var path : String = dat[2]
+				if path.begins_with("res:") or path.begins_with("user:"):
+					path = ProjectSettings.globalize_path(path)
+				btn.connect("pressed", OS, "shell_open", [path])
+				btn.connect("pressed", check, "set", ["pressed", true])
+				cont.add_child(btn)
 			_:
 				pass
 		
@@ -162,9 +178,6 @@ func delete_checklist():
 		child.queue_free()
 
 
-	##print("saved changelog")
-
-
 func _on_OptionButton_item_selected(index):
 	load_checklist(index)
 
@@ -179,7 +192,7 @@ func _on_Editbtn_toggled(button_pressed):
 		var id : int = _list_chooser.selected
 		if _name_edit.text != _list_chooser.text:
 			var new_path : String = current_path.get_base_dir()+"/"+_name_edit.text+".txt"
-			prints(current_path, new_path, fh.path_exists(new_path))
+#			prints(current_path, new_path, fh.path_exists(new_path))
 			if !fh.path_exists(new_path):
 				fh.rename(current_path, new_path)
 				checklist_file_list.erase(_list_chooser.text)

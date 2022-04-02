@@ -8,4 +8,6 @@ remove debug prints
 take screenshots
 finishing touches
 E|Export All|f|all
-M|upload to AssetLib|res://testmacro
+M|upload to AssetLib|res://testmacro.gd
+O|Add addon to my website|https://sites.google.com/view/ascondguy/start
+
