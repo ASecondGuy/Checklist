@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://addons/Checklist/Doc.gd" type="Script" id=1]
 [ext_resource path="res://addons/Checklist/icons/CheckBox.svg" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/Checklist/settings/Settings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/Checklist/icons/Edit.svg" type="Texture" id=5]
 [ext_resource path="res://addons/Checklist/icons/Remove.svg" type="Texture" id=6]
+[ext_resource path="res://addons/Checklist/Changelog.gd" type="Script" id=7]
 
 [sub_resource type="GDScript" id=2]
 script/source = "tool
@@ -62,9 +63,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 200 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TabContainer" type="TabContainer" parent="."]
 margin_right = 1024.0
@@ -146,6 +144,7 @@ margin_right = 1016.0
 margin_bottom = 564.0
 size_flags_vertical = 3
 wrap_enabled = true
+caret_blink = true
 
 [node name="Changelog" type="VBoxContainer" parent="TabContainer"]
 visible = false
@@ -155,6 +154,7 @@ margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+script = ExtResource( 7 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Changelog"]
 margin_right = 1016.0
@@ -185,12 +185,14 @@ highlight_current_line = true
 show_line_numbers = true
 fold_gutter = true
 hiding_enabled = true
+caret_blink = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TabContainer/Changelog"]
+root_node = NodePath("../../..")
+"anims/fade away" = SubResource( 1 )
 
 [node name="Settings" parent="TabContainer" instance=ExtResource( 4 )]
 visible = false
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-"anims/fade away" = SubResource( 1 )
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_TabContainer_tab_changed"]
 [connection signal="pressed" from="TabContainer/Checklist/cont/btns/uncheckbtn" to="." method="uncheck_checklist"]
@@ -198,4 +200,5 @@ visible = false
 [connection signal="button_down" from="TabContainer/Checklist/cont/btns/deletebtn" to="TabContainer/Checklist/cont/btns/deletebtn" method="_on_deletebtn_button_down"]
 [connection signal="button_up" from="TabContainer/Checklist/cont/btns/deletebtn" to="TabContainer/Checklist/cont/btns/deletebtn" method="_on_deletebtn_button_up"]
 [connection signal="toggled" from="TabContainer/Checklist/cont/btns/Editbtn" to="." method="_on_Editbtn_toggled"]
-[connection signal="pressed" from="TabContainer/Changelog/HBoxContainer/savebtn" to="." method="save_changelog"]
+[connection signal="visibility_changed" from="TabContainer/Changelog" to="TabContainer/Changelog" method="_on_Changelog_visibility_changed"]
+[connection signal="pressed" from="TabContainer/Changelog/HBoxContainer/savebtn" to="TabContainer/Changelog" method="save_changelog"]

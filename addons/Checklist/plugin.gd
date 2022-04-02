@@ -20,7 +20,7 @@ var settings := default_settings
 var threads := {}
 
 
-func _ready():
+func _enter_tree():
 	var cmd_args := Array(OS.get_cmdline_args())
 	if (cmd_args.has("--export") or cmd_args.has("--export-debug") or
 	cmd_args.has("--no-window")):
@@ -37,11 +37,9 @@ func _ready():
 	add_child(file_helper)
 	Doc = DocScene.instance()
 	Doc.plugin = self
-	
 	Doc.settings = settings
 	Doc.fh = file_helper
 	update_doc_position()
-	Doc.setup()
 	
 	print("Checklist started")
 

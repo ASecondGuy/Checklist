@@ -4,7 +4,7 @@ extends MarginContainer
 const INTENDATION_SIZE := 25
 
 onready var _checklist = $TabContainer/Checklist/cont/Scroll/list
-onready var _changelog := $TabContainer/Changelog/edit
+onready var _changelog := $TabContainer/Changelog
 onready var _list_chooser := $TabContainer/Checklist/cont/btns/OptionButton
 onready var _list_edit := $TabContainer/Checklist/cont/ListEdit
 onready var _name_edit := $TabContainer/Checklist/cont/btns/NameEdit
@@ -19,17 +19,20 @@ var fh
 var checklist_file_list := {}
 var current_path := ""
 
+func _enter_tree():
+	print("testdoc enter tree")
+	if !Engine.editor_hint:
+		fh = preload("res://addons/Checklist/filehelper.gd").new()
+
 func _ready():
-	if Engine.editor_hint: return
-	fh = preload("res://addons/Checklist/filehelper.gd").new()
-	setup()
+	call_deferred("find_checklists")
 
+func save_changelog():
+	_changelog.save_changelog()
 
-func setup():
-	load_changelog()
-	find_checklists()
 
 func find_checklists():
+	if !is_instance_valid(plugin): return
 	settings = plugin.settings
 	
 	checklist_file_list.clear()
@@ -158,26 +161,7 @@ func delete_checklist():
 	for child in _checklist.get_children():
 		child.queue_free()
 
-func load_changelog():
-	var text = fh.read_text(settings.get("changelog_path", ""))
-	if text == "": return
-	
-	_changelog.text = text
-	
-	#move cursor to the end
-	var lc :int = _changelog.get_line_count()
-	while lc > 0 and _changelog.get_line(lc-1).strip_edges().empty():
-		lc-=1
-	_changelog.cursor_set_line(lc)
-	_changelog.cursor_set_column(_changelog.get_line(lc-1).length())
-	
-	_changelog.fold_all_lines()
 
-func save_changelog():
-	# Don't save if the changelog is empty
-	if _changelog.text.strip_edges().empty(): return
-	fh.write_text(settings.get("changelog_path", ""), _changelog.text)
-	$AnimationPlayer.play("fade away")
 	##print("saved changelog")
 
 
